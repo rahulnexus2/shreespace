@@ -7,11 +7,4 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  build: {
-    chunkSizeWarningLimit: 1000,
-    minify: 'esbuild',
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'axios', 'react-helmet-async'],
-  },
 })
