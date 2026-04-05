@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://161.118.184.96:8080/shree-space/:path*"
+    }
+  ]
+}
