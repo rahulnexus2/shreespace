@@ -8,15 +8,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          helmet: ['react-helmet-async'],
-          axios: ['axios'],
-        }
-      }
-    },
     chunkSizeWarningLimit: 1000,
     minify: 'esbuild',
   },
