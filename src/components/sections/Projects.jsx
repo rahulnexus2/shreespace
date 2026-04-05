@@ -18,6 +18,13 @@ const ProjectsSkeleton = () => (
   </div>
 );
 
+const optimizeImage = (url) => {
+  if (!url) return url;
+  return url.replace('/upload/', '/upload/f_auto,q_auto,w_600/');
+};
+
+
+
 const Projects = () => {
   const { data, loading, error, execute } = useApi(projectService.getActive);
 
@@ -84,7 +91,7 @@ const Projects = () => {
           {/* thumbnail */}
           <div className="h-40 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center relative overflow-hidden border-b border-neutral-200 dark:border-neutral-800">
             {img
-              ? <img src={img} alt={project.name} className="absolute inset-0 w-full h-full object-cover" />
+              ? <img src={optimizeImage(img)} alt={project.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
               : <span className="text-4xl font-black text-neutral-300 dark:text-neutral-700">
                   {project.name?.slice(0, 2).toUpperCase()}
                 </span>

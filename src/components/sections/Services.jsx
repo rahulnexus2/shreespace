@@ -3,6 +3,11 @@ import useApi from '../../hooks/useApi';
 import serviceService from '../../api/services/serviceService';
 import { SERVICE_ICONS } from '../../utils/constants';
 
+
+const optimizeImage = (url) => {
+  if (!url) return url;
+  return url.replace('/upload/', '/upload/f_auto,q_auto,w_600/');
+};
 const ServicesSkeleton = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
     {[...Array(6)].map((_, i) => (
@@ -63,12 +68,15 @@ const Services = () => {
         className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-8 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-neutral-900 transition-all duration-200 cursor-default"
       >
         <div className="w-14 h-14 rounded-2xl overflow-hidden mb-6 flex-shrink-0">
+          
+          
           {service.imgUrl ? (
-            <img
-              src={service.imgUrl}
-              alt={service.title}
-              className="w-full h-full object-cover rounded-2xl"
-            />
+  <img
+    loading="lazy"
+    src={optimizeImage(service.imgUrl)}
+    alt={service.title}
+    className="w-full h-full object-cover rounded-2xl"
+  />
           ) : (
             <div className="w-full h-full bg-neutral-900 dark:bg-white flex items-center justify-center text-2xl rounded-2xl">
               {SERVICE_ICONS[service.title] || '⚙️'}

@@ -37,7 +37,7 @@ const Testimonials = () => {
     : [];
 
   return (
-    <section className="py-24 px-6 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200">
+    <section id="testimonials"  className="py-24 px-6 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200">
       <div className="max-w-6xl mx-auto">
 
         <div className="text-center mb-14">

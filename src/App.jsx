@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/sections/Navbar';
 import Hero from './components/sections/Hero';
-import Services from './components/sections/Services';
-import Projects from './components/sections/Projects';
-import Testimonials from './components/sections/Testimonials';
 import ContactModal from './components/sections/ContactModal';
-import Footer from './components/sections/Footer';
-import About from './components/sections/About';
+
+// lazy load below-the-fold sections
+const About        = lazy(() => import('./components/sections/About'));
+const Services     = lazy(() => import('./components/sections/Services'));
+const Projects     = lazy(() => import('./components/sections/Projects'));
+const Testimonials = lazy(() => import('./components/sections/Testimonials'));
+const Footer       = lazy(() => import('./components/sections/Footer'));
 
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -44,26 +46,36 @@ const App = () => {
           <Hero onContactClick={openModal} />
         </ErrorBoundary>
 
-        <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load about.</p>}>
-          <About />
-        </ErrorBoundary>
+        <Suspense fallback={null}>
+          <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load about.</p>}>
+            <About />
+          </ErrorBoundary>
+        </Suspense>
 
-        <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load services.</p>}>
-          <Services />
-        </ErrorBoundary>
+        <Suspense fallback={null}>
+          <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load services.</p>}>
+            <Services />
+          </ErrorBoundary>
+        </Suspense>
 
-        <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load projects.</p>}>
-          <Projects />
-        </ErrorBoundary>
+        <Suspense fallback={null}>
+          <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load projects.</p>}>
+            <Projects />
+          </ErrorBoundary>
+        </Suspense>
 
-        <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load testimonials.</p>}>
-          <Testimonials />
-        </ErrorBoundary>
+        <Suspense fallback={null}>
+          <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load testimonials.</p>}>
+            <Testimonials />
+          </ErrorBoundary>
+        </Suspense>
       </main>
 
-      <ErrorBoundary fallback={<p className="text-center py-8 text-neutral-400">Could not load footer.</p>}>
-        <Footer onContactClick={openModal} />
-      </ErrorBoundary>
+      <Suspense fallback={null}>
+        <ErrorBoundary fallback={<p className="text-center py-8 text-neutral-400">Could not load footer.</p>}>
+          <Footer onContactClick={openModal} />
+        </ErrorBoundary>
+      </Suspense>
 
       <ContactModal isOpen={modalOpen} onClose={closeModal} />
 
