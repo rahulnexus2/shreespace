@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/sections/Navbar';
@@ -9,6 +10,7 @@ import Testimonials from './components/sections/Testimonials';
 import ContactModal from './components/sections/ContactModal';
 import Footer from './components/sections/Footer';
 import About from './components/sections/About';
+
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -18,16 +20,33 @@ const App = () => {
   return (
     <ThemeProvider>
 
+      <Helmet>
+        <title>Navasha Tech | Digital Agency</title>
+        <meta name="description" content="Navasha Tech is a full-service digital agency specializing in web development, UI/UX design, cloud solutions and DevOps." />
+        <meta name="keywords" content="web development, UI/UX design, cloud, DevOps, digital agency, Navasha Tech" />
+        <meta name="author" content="Navasha Tech" />
+        <link rel="canonical" href="https://shreespace.vercel.app" />
+        <meta property="og:title" content="Navasha Tech | Digital Agency" />
+        <meta property="og:description" content="Building modern digital experiences that elevate brands and drive results." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://shreespace.vercel.app" />
+        <meta property="og:image" content="https://shreespace.vercel.app/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Navasha Tech | Digital Agency" />
+        <meta name="twitter:description" content="Building modern digital experiences that elevate brands and drive results." />
+        <meta name="twitter:image" content="https://shreespace.vercel.app/og-image.png" />
+      </Helmet>
+
       <Navbar onContactClick={openModal} />
 
       <main>
-        
         <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load hero.</p>}>
           <Hero onContactClick={openModal} />
         </ErrorBoundary>
+
         <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load about.</p>}>
-  <About />
-</ErrorBoundary>
+          <About />
+        </ErrorBoundary>
 
         <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load services.</p>}>
           <Services />

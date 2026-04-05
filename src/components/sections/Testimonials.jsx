@@ -1,80 +1,6 @@
-{/*import { useEffect } from 'react';
-import useApi from '../../hooks/useApi';
-import messageService from '../../api/services/messageService';
-
-const Testimonials = () => {
-  const { data, loading, error, execute } = useApi(messageService.getActive);
-
-  useEffect(() => {
-    execute();
-  }, []);
-
-  useEffect(() => {
-  if (data) console.log(data);
-  }, [data]);
-
-  
-  const testimonials = data
-    ? data.filter(item => item.messageType?.toLowerCase() === 'testimonial')
-    : [];
-
-  return (
-    <section className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-
-        <h2 className="text-3xl font-bold mb-10 text-center">
-          Testimonials
-        </h2>
-
-        
-        {loading && <p>Loading...</p>}
-
-        
-        {error && <p>Error loading testimonials</p>}
-
-        
-        {!loading && testimonials.length === 0 && (
-          <p className="text-center">No testimonials found</p>
-        )}
-
-     
-        {!loading && testimonials.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {testimonials.map(item => (
-  <div
-    key={item.id}
-    className="border rounded-xl p-6 shadow"
-  >
-    <span className="text-xs px-2 py-1 bg-gray-200 rounded-full">
-      {item.messageType}
-    </span>
-
-   
-    <p className="text-sm my-4">
-      {item.text.replace(/^"|"$/g, "")}
-    </p>
-
-   
-    <p className="text-xs text-gray-500">
-      ID: {item.id}
-    </p>
-  </div>
-))}
-          </div>
-        )}
-
-      </div>
-    </section>
-  );
-};
-
-export default Testimonials;
-
-*/}
-
 import { useEffect } from 'react';
 import useApi from '../../hooks/useApi';
-import messageService from '../../api/services/messageService';
+import userService from '../../api/services/userService';
 
 const StarDisplay = ({ rate }) => {
   if (!rate || rate <= 0) return null;
@@ -91,29 +17,39 @@ const StarDisplay = ({ rate }) => {
 };
 
 const Testimonials = () => {
-  const { data, loading, error, execute } = useApi(messageService.getActive);
+  const { data, loading, error, execute } = useApi(userService.getActive);
 
   useEffect(() => {
     execute();
   }, []);
 
- useEffect(() => {
-  if (data) {
-    console.log('testimonials:', JSON.stringify(data.filter(i => i.messageType?.toLowerCase() === 'testimonial'), null, 2));
-  }
-}, [data]);
-
+  // flatten users -> their testimonial messages with user info attached
   const testimonials = data
-    ? data.filter(item => item.messageType?.toLowerCase() === 'testimonial')
+    ? data.flatMap(user =>
+        (user.messageDtos || [])
+          .filter(msg => msg.messageType?.toLowerCase() === 'testimonial' && msg.isActive && msg.isApproved)
+          .map(msg => ({
+            ...msg,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          }))
+      )
     : [];
 
   return (
-    <section className="py-24 px-6">
+    <section className="py-24 px-6 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200">
       <div className="max-w-6xl mx-auto">
 
-        <h2 className="text-3xl font-bold mb-10 text-center">Testimonials</h2>
+        <div className="text-center mb-14">
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 dark:text-white mb-3">
+            Testimonials
+          </h2>
+          <p className="text-neutral-500 dark:text-neutral-400 text-base">
+            What our clients say about us
+          </p>
+        </div>
 
-        {loading && <p className="text-center">Loading...</p>}
+        {loading && <p className="text-center text-neutral-400">Loading...</p>}
         {error && <p className="text-center text-red-500">Error loading testimonials</p>}
 
         {!loading && testimonials.length === 0 && (
@@ -123,29 +59,25 @@ const Testimonials = () => {
         {!loading && testimonials.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {testimonials.map(item => (
-              <div key={item.id} className="border rounded-xl p-6 shadow dark:border-neutral-700 flex flex-col">
+              <div key={item.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
 
                 {/* star rating */}
                 <StarDisplay rate={item.rate} />
 
                 {/* message */}
-                <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-4 flex-1">
-                  {item.text.replace(/^"|"$/g, '')}
+                <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6 flex-1">
+                  {item.text?.replace(/^"|"$/g, '')}
                 </p>
 
                 {/* user */}
-                {item.userDto ? (
-                  <div className="flex items-center gap-2 mt-auto">
-                    <div className="w-8 h-8 rounded-full bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-900 text-xs font-bold">
-                      {item.userDto.firstName?.[0]}{item.userDto.lastName?.[0]}
-                    </div>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">
-                      {item.userDto.firstName} {item.userDto.lastName}
-                    </p>
+                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-neutral-100 dark:border-neutral-800">
+                  <div className="w-9 h-9 rounded-full bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-900 text-xs font-bold flex-shrink-0">
+                    {item.firstName?.[0]}{item.lastName?.[0]}
                   </div>
-                ) : (
-                  <p className="text-xs text-neutral-400 mt-auto">Anonymous</p>
-                )}
+                  <p className="text-sm font-semibold text-neutral-900 dark:text-white">
+                    {item.firstName} {item.lastName}
+                  </p>
+                </div>
 
               </div>
             ))}
