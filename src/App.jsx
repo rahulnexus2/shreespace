@@ -14,10 +14,9 @@ const Testimonials = lazy(() => import('./components/sections/Testimonials'));
 const Footer       = lazy(() => import('./components/sections/Footer'));
 
 const App = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const openModal  = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const [activeType, setActiveType] = useState(null);
+  const openModal  = (type) => setActiveType(type);
+  const closeModal = () => setActiveType(null);
 
   return (
     <ThemeProvider>
@@ -39,11 +38,14 @@ const App = () => {
         <meta name="twitter:image" content="https://shreespace.vercel.app/og-image.png" />
       </Helmet>
 
-      <Navbar onContactClick={openModal} />
+     <Navbar
+  onContactClick={() => openModal('Query')}
+  onFeedbackClick={() => openModal('Feedback')}
+/>
 
       <main>
         <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load hero.</p>}>
-          <Hero onContactClick={openModal} />
+          <Hero onContactClick={() => openModal('Query')} />
         </ErrorBoundary>
 
         <Suspense fallback={null}>
@@ -66,19 +68,20 @@ const App = () => {
 
         <Suspense fallback={null}>
           <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load testimonials.</p>}>
-            <Testimonials />
+            <Testimonials onTestimonialClick={() => openModal('Testimonial')} />
           </ErrorBoundary>
         </Suspense>
       </main>
 
       <Suspense fallback={null}>
         <ErrorBoundary fallback={<p className="text-center py-8 text-neutral-400">Could not load footer.</p>}>
-          <Footer onContactClick={openModal} />
+          <Footer onFeedbackClick={() => openModal('Feedback')} />
         </ErrorBoundary>
       </Suspense>
-
-      <ContactModal isOpen={modalOpen} onClose={closeModal} />
-
+    <ErrorBoundary fallback={<p className="text-center py-8 text-neutral-400">Could not load Contactmodal.</p>}>
+          
+      <ContactModal isOpen={!!activeType} onClose={closeModal} type={activeType} />
+       </ErrorBoundary>
     </ThemeProvider>
   );
 };

@@ -17,7 +17,7 @@ const TwitterIcon = () => (
   </svg>
 );
 
-const Footer = ({ onContactClick }) => {
+const Footer = ({ onContactClick, onFeedbackClick }) => {
   const navLinks = [
     { label: 'Services',     href: '#services'     },
     { label: 'Projects',     href: '#projects'     },
@@ -34,114 +34,128 @@ const Footer = ({ onContactClick }) => {
   return (
     <footer className="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 transition-colors duration-200">
 
-  <div className="py-24 px-6 text-center border-b border-neutral-200 dark:border-neutral-800">
-    <p className="text-xs font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-4">
-      Let's work together
-    </p>
-    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-white mb-4">
-      Ready to build something great?
-    </h2>
-    <p className="text-neutral-500 dark:text-neutral-400 text-base mb-10 max-w-md mx-auto">
-      Tell us about your project and we'll get back to you within 24 hours.
-    </p>
-    <button
-      onClick={onContactClick}
-      className="px-10 py-3.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:opacity-80 transition-opacity cursor-pointer border-0"
-    >
-      Start a conversation
-    </button>
-  </div>
-
-  <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-neutral-200 dark:border-neutral-800">
-
-    <div className="md:col-span-1">
-      <div className="flex items-center gap-2.5 mb-4">
-        <div className="w-8 h-8 bg-neutral-900 dark:bg-white rounded-lg flex items-center justify-center flex-shrink-0">
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        <span className="font-bold text-base text-neutral-900 dark:text-white">Navasha Tech</span>
-      </div>
-      <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed mb-6 max-w-xs">
-        Building modern digital experiences that elevate brands and drive real business results.
-      </p>
-      <div className="flex items-center gap-3">
-        {socialLinks.map(({ label, href, Icon }) => (
-          <a
-            key={label}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={label}
-            className="w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
-          >
-            <Icon />
-          </a>
-        ))}
-      </div>
-    </div>
-
-    <div>
-      <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-5">
-        Navigation
-      </h4>
-      <ul className="flex flex-col gap-3 list-none">
-        {navLinks.map(item => (
-         
-          <li key={item.label}>
-             <a
-            
-              href={item.href}
-              className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors no-underline"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-        <li>
+      <div className="py-24 px-6 text-center border-b border-neutral-200 dark:border-neutral-800">
+        <p className="text-xs font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-4">
+          Let's work together
+        </p>
+        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-white mb-4">
+          Ready to build something great?
+        </h2>
+        <p className="text-neutral-500 dark:text-neutral-400 text-base mb-10 max-w-md mx-auto">
+          Tell us about your project and we'll get back to you within 24 hours.
+        </p>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
           <button
             onClick={onContactClick}
-            className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors bg-transparent border-0 cursor-pointer p-0"
+            className="px-10 py-3.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:opacity-80 transition-opacity cursor-pointer border-0"
           >
-            Contact
+            Start a conversation
           </button>
-        </li>
-      </ul>
-    </div>
+          <button
+            onClick={onFeedbackClick}
+            className="px-10 py-3.5 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer bg-transparent"
+          >
+            Give Feedback
+          </button>
+        </div>
+      </div>
 
-    <div>
-      <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-5">
-        Contact
-      </h4>
-      <ul className="flex flex-col gap-3 list-none">
-        <li className="text-sm text-neutral-500 dark:text-neutral-400">✉ hello@navashatech.com</li>
-        <li className="text-sm text-neutral-500 dark:text-neutral-400">📍 Remote · Worldwide</li>
-        <li className="text-sm text-neutral-500 dark:text-neutral-400">🕐 Mon–Fri, 9am–6pm IST</li>
-      </ul>
-    </div>
+      <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-neutral-200 dark:border-neutral-800">
 
-  </div>
+        <div className="md:col-span-1">
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="w-8 h-8 bg-neutral-900 dark:bg-white rounded-lg flex items-center justify-center flex-shrink-0 text-white dark:text-neutral-900">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <span className="font-bold text-base text-neutral-900 dark:text-white">Navasha Tech</span>
+          </div>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed mb-6 max-w-xs">
+            Building modern digital experiences that elevate brands and drive real business results.
+          </p>
+          <div className="flex items-center gap-3">
+            {socialLinks.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="w-8 h-8 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+              >
+                <Icon />
+              </a>
+            ))}
+          </div>
+        </div>
 
-  <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between flex-wrap gap-3">
-    <p className="text-xs text-neutral-400 dark:text-neutral-600">
-      © 2026 Navasha Tech. All rights reserved.
-    </p>
-    <div className="flex items-center gap-5">
-      {['Privacy Policy', 'Terms of Service'].map(item => (
-        <button
-          key={item}
-          className="text-xs text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-400 transition-colors bg-transparent border-0 cursor-pointer p-0"
-        >
-          {item}
-        </button>
-      ))}
-    </div>
-  </div>
+        <div>
+          <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-5">
+            Navigation
+          </h4>
+          <ul className="flex flex-col gap-3 list-none">
+            {navLinks.map(item => (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors no-underline"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+            <li>
+              <button
+                onClick={onContactClick}
+                className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors bg-transparent border-0 cursor-pointer p-0"
+              >
+                Contact
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={onFeedbackClick}
+                className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors bg-transparent border-0 cursor-pointer p-0"
+              >
+                Feedback
+              </button>
+            </li>
+          </ul>
+        </div>
 
-</footer>
+        <div>
+          <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-5">
+            Contact
+          </h4>
+          <ul className="flex flex-col gap-3 list-none">
+            <li className="text-sm text-neutral-500 dark:text-neutral-400">✉ hello@navashatech.com</li>
+            <li className="text-sm text-neutral-500 dark:text-neutral-400">📍 Remote · Worldwide</li>
+            <li className="text-sm text-neutral-500 dark:text-neutral-400">🕐 Mon–Fri, 9am–6pm IST</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between flex-wrap gap-3">
+        <p className="text-xs text-neutral-400 dark:text-neutral-600">
+          © 2026 Navasha Tech. All rights reserved.
+        </p>
+        <div className="flex items-center gap-5">
+          {['Privacy Policy', 'Terms of Service'].map(item => (
+            <button
+              key={item}
+              className="text-xs text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-400 transition-colors bg-transparent border-0 cursor-pointer p-0"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
+
+    </footer>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
-const Navbar = ({ onContactClick }) => {
+const Navbar = ({ onContactClick, onFeedbackClick }) => {
   const { dark, toggle } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -46,7 +46,15 @@ const Navbar = ({ onContactClick }) => {
           {dark ? '☀️' : '☽'}
         </button>
 
-        {/* cta */}
+        {/* feedback button — desktop */}
+        <button
+          onClick={onFeedbackClick}
+          className="hidden md:block px-5 py-2 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer bg-transparent"
+        >
+          Feedback
+        </button>
+
+        {/* get started — desktop */}
         <button
           onClick={onContactClick}
           className="hidden md:block px-5 py-2 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:opacity-80 transition-opacity cursor-pointer border-0"
@@ -66,7 +74,7 @@ const Navbar = ({ onContactClick }) => {
       {/* mobile menu */}
       {menuOpen && (
         <div className="absolute top-16 left-0 right-0 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 flex flex-col px-6 py-4 gap-4 md:hidden">
-         {['About', 'Services', 'Projects', 'Testimonials'].map(link => (
+          {['About', 'Services', 'Projects', 'Testimonials'].map(link => (
             <button
               key={link}
               onClick={() => { setMenuOpen(false); window.location.href = `#${link.toLowerCase()}`; }}
@@ -75,6 +83,16 @@ const Navbar = ({ onContactClick }) => {
               {link}
             </button>
           ))}
+
+          {/* feedback — mobile */}
+          <button
+            onClick={() => { setMenuOpen(false); onFeedbackClick(); }}
+            className="px-5 py-2 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-sm font-medium w-fit hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer bg-transparent"
+          >
+            Feedback
+          </button>
+
+          {/* get started — mobile */}
           <button
             onClick={() => { setMenuOpen(false); onContactClick(); }}
             className="px-5 py-2 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold w-fit hover:opacity-80 transition-opacity cursor-pointer border-0"
