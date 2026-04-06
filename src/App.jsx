@@ -39,26 +39,22 @@ const App = () => {
       </Helmet>
 
      <Navbar
-  onContactClick={() => openModal('Query')}
-  onFeedbackClick={() => openModal('Feedback')}
-/>
+      onContactClick={() => openModal('Query')}
+      onFeedbackClick={() => openModal('Feedback')}
+      />
 
       <main>
         <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load hero.</p>}>
           <Hero onContactClick={() => openModal('Query')} />
         </ErrorBoundary>
 
-        <Suspense fallback={null}>
-          <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load about.</p>}>
-            <About />
-          </ErrorBoundary>
-        </Suspense>
-
+        
         <Suspense fallback={null}>
           <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load services.</p>}>
             <Services />
           </ErrorBoundary>
         </Suspense>
+
 
         <Suspense fallback={null}>
           <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load projects.</p>}>
@@ -71,11 +67,20 @@ const App = () => {
             <Testimonials onTestimonialClick={() => openModal('Testimonial')} />
           </ErrorBoundary>
         </Suspense>
+
+        <Suspense fallback={null}>
+          <ErrorBoundary fallback={<p className="text-center py-16 text-neutral-400">Could not load about.</p>}>
+            <About />
+          </ErrorBoundary>
+        </Suspense>
+
+
+        
       </main>
 
       <Suspense fallback={null}>
         <ErrorBoundary fallback={<p className="text-center py-8 text-neutral-400">Could not load footer.</p>}>
-          <Footer onFeedbackClick={() => openModal('Feedback')} />
+          <Footer onFeedbackClick={() => openModal('Feedback')}  onContactClick={() => openModal('Query')} />
         </ErrorBoundary>
       </Suspense>
     <ErrorBoundary fallback={<p className="text-center py-8 text-neutral-400">Could not load Contactmodal.</p>}>

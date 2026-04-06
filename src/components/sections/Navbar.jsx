@@ -85,20 +85,21 @@ const Navbar = ({ onContactClick, onFeedbackClick }) => {
           ))}
 
           {/* feedback — mobile */}
-          <button
-            onClick={() => { setMenuOpen(false); onFeedbackClick(); }}
-            className="px-5 py-2 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-sm font-medium w-fit hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer bg-transparent"
-          >
-            Feedback
-          </button>
+          {/* feedback — mobile */}
+<button
+  onClick={() => { setMenuOpen(false); onFeedbackClick(); }}
+  className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors text-left bg-transparent border-0 cursor-pointer p-0"
+>
+  Feedback
+</button>
 
-          {/* get started — mobile */}
-          <button
-            onClick={() => { setMenuOpen(false); onContactClick(); }}
-            className="px-5 py-2 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold w-fit hover:opacity-80 transition-opacity cursor-pointer border-0"
-          >
-            Get Started
-          </button>
+{/* get started — mobile */}
+<button
+  onClick={() => { setMenuOpen(false); onContactClick(); }}
+  className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors text-left bg-transparent border-0 cursor-pointer p-0"
+>
+  Get Started
+</button>
         </div>
       )}
     </nav>
