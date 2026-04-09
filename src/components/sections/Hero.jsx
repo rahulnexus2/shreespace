@@ -1,30 +1,44 @@
 const Hero = ({ onContactClick }) => {
   return (
-    <section id="home" className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200">
+    <section
+      id="home"
+      className="min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-20 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200"
+    >
+      <div className="max-w-5xl mx-auto text-center">
 
-      <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-neutral-900 dark:text-white leading-tight max-w-4xl mb-6">
-        Building Modern<br/>Digital Experiences
-      </h1>
+        {/* Headline */}
+        <h1 className="text-5xl md:text-7xl font-black tracking-tight text-neutral-900 dark:text-white leading-[1.1] mb-8">
+          We Build Digital Products <br />
+          That Drive Real Growth
+        </h1>
 
-      <p className="text-lg text-neutral-500 dark:text-neutral-400 max-w-xl leading-relaxed font-normal mb-10">
-        We craft beautiful, high-performance websites and applications that help businesses thrive in the digital age.
-      </p>
+        {/* Subtext */}
+        <p className="text-lg md:text-xl text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed mb-10">
+          From design and development to SEO, DevOps, and cloud solutions —
+          we help startups and businesses create scalable digital experiences
+          that turn visitors into customers.
+        </p>
 
-      <div className="flex items-center gap-3 flex-wrap justify-center">
-        <button
-          onClick={onContactClick}
-          className="px-8 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-base font-semibold hover:opacity-80 transition-opacity cursor-pointer border-0"
-        >
-          Get Started
-        </button>
-        <button
-          onClick={() => { window.location.href = '#services'; }}
-          className="px-8 py-3 rounded-full bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-base font-semibold border border-neutral-200 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500 transition-colors cursor-pointer"
-        >
-          Learn More
-        </button>
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+          <button
+            onClick={onContactClick}
+            className="px-8 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-base font-semibold hover:opacity-80 transition"
+          >
+            Book a Consultation
+          </button>
+
+          <button
+            onClick={() => (window.location.href = "#services")}
+            className="px-8 py-3 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+          >
+            Explore Services
+          </button>
+        </div>
+
+        
+
       </div>
-
     </section>
   );
 };
