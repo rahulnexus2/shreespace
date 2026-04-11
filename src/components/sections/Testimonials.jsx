@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import useApi from '../../hooks/useApi';
+import messageService from '../../api/services/messageService';
 import userService from '../../api/services/userService';
 
 const StarDisplay = ({ rate }) => {
@@ -8,7 +9,7 @@ const StarDisplay = ({ rate }) => {
   return (
     <div className="flex gap-0.5 mb-3">
       {[1, 2, 3, 4, 5].map((star) => (
-        <span key={star} className={star <= capped ? 'text-yellow-400' : 'text-neutral-300'}>
+        <span key={star} className={star <= capped ? 'text-yellow-400' : 'text-neutral-300 dark:text-neutral-600'}>
           ★
         </span>
       ))}
@@ -23,37 +24,61 @@ const TestimonialCard = ({ item }) => (
       {item.text?.replace(/^"|"$/g, '')}
     </p>
     <div className="flex items-center gap-3 mt-auto pt-4 border-t border-neutral-100 dark:border-neutral-800">
-      <div className="w-9 h-9 rounded-full bg-neutral-900 dark:bg-white flex items-center justify-content-center flex items-center justify-center text-white dark:text-neutral-900 text-xs font-bold flex-shrink-0">
-        {item.firstName?.[0]}{item.lastName?.[0]}
+      <div className="w-9 h-9 rounded-full bg-neutral-900 dark:bg-white flex items-center justify-center text-white dark:text-neutral-900 text-xs font-bold flex-shrink-0">
+        {item.firstName?.[0]?.toUpperCase()}{item.lastName?.[0]?.toUpperCase()}
       </div>
-      <p className="text-sm font-semibold text-neutral-900 dark:text-white">
-        {item.firstName} {item.lastName}
-      </p>
+      <div>
+        <p className="text-sm font-semibold text-neutral-900 dark:text-white leading-tight">
+          {item.firstName} {item.lastName}
+        </p>
+        {item.email && (
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{item.email}</p>
+        )}
+      </div>
     </div>
   </div>
 );
 
 const Testimonials = ({ onTestimonialClick }) => {
-  const { data, loading, error, execute } = useApi(userService.getActive);
+  const { data: messages, loading: msgLoading, error: msgError, execute: fetchMessages } = useApi(messageService.getActive);
+  const { data: users, loading: userLoading, error: userError, execute: fetchUsers } = useApi(userService.getActive);
+
   const [showAll, setShowAll] = useState(false);
   const trackRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   useEffect(() => {
-    execute()
+    fetchMessages();
+    fetchUsers();
   }, []);
 
-  const testimonials = data
-    ? data.flatMap(user =>
-        (user.messageDtos || [])
-          .filter(msg => msg.messageType?.toLowerCase() === 'testimonial' && msg.isActive && msg.isApproved)
-          .map(msg => ({
+  useEffect(() => {
+    if (messages) console.log("first message:", messages[0]);
+  }, [messages]);
+  useEffect(() => {
+  console.log("USERS:", users);
+}, [users]);
+
+  const loading = msgLoading || userLoading;
+  const error = msgError || userError;
+
+  const testimonials = messages && users
+    ? messages
+        .filter(msg =>
+          msg.messageType?.toLowerCase() === 'testimonial' &&
+          msg.isActive !== false &&
+          msg.isApproved !== false
+        )
+        .map(msg => {
+          const user = users.find(u => u.id === msg.userId);
+          return {
             ...msg,
-            firstName: user.firstName,
-            lastName: user.lastName,
-          }))
-      )
+            firstName: user?.firstName ?? '',
+            lastName: user?.lastName ?? '',
+            email: user?.email ?? '',
+          };
+        })
     : [];
 
   const INITIAL_COUNT = 10;
@@ -85,6 +110,7 @@ const Testimonials = ({ onTestimonialClick }) => {
     <section id="testimonials" className="py-24 px-6 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-200">
       <div className="max-w-6xl mx-auto">
 
+        {/* Header */}
         <div className="text-center mb-14">
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 dark:text-white mb-3">
             Testimonials
@@ -100,18 +126,18 @@ const Testimonials = ({ onTestimonialClick }) => {
           </button>
         </div>
 
+        {/* States */}
         {loading && <p className="text-center text-neutral-400">Loading...</p>}
-        {error && <p className="text-center text-red-500">Error loading testimonials</p>}
-        {!loading && testimonials.length === 0 && (
-          <p className="text-center text-neutral-500">No testimonials found</p>
+        {error && <p className="text-center text-red-500">Error loading testimonials.</p>}
+        {!loading && !error && testimonials.length === 0 && (
+          <p className="text-center text-neutral-500 dark:text-neutral-400">No testimonials yet.</p>
         )}
 
-        {!loading && testimonials.length > 0 && (
+        {/* Content */}
+        {!loading && !error && testimonials.length > 0 && (
           <>
             {!showAll ? (
-              /* ── Carousel view ── */
               <div className="relative">
-                {/* Left arrow */}
                 {canScrollLeft && (
                   <button
                     onClick={() => scroll(-1)}
@@ -121,7 +147,6 @@ const Testimonials = ({ onTestimonialClick }) => {
                   </button>
                 )}
 
-                {/* Scroll track */}
                 <div
                   ref={trackRef}
                   className="flex gap-4 overflow-x-auto scroll-smooth pb-4"
@@ -133,7 +158,6 @@ const Testimonials = ({ onTestimonialClick }) => {
                   ))}
                 </div>
 
-                {/* Right arrow */}
                 {canScrollRight && (
                   <button
                     onClick={() => scroll(1)}
@@ -144,7 +168,6 @@ const Testimonials = ({ onTestimonialClick }) => {
                 )}
               </div>
             ) : (
-              /* ── Expanded grid view ── */
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {testimonials.map(item => (
                   <TestimonialCard key={item.id} item={item} />
@@ -152,7 +175,6 @@ const Testimonials = ({ onTestimonialClick }) => {
               </div>
             )}
 
-            {/* See more / See less */}
             {hasMore && (
               <div className="text-center mt-10">
                 <button

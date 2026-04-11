@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import serviceService from "../api/services/serviceService";
 
 
-export const ServicesContext = createContext();
+export const ServicesContext = createContext({ services: [], loading: false });
 
 
 const ServicesProvider = ({ children }) => {
@@ -14,7 +14,9 @@ const ServicesProvider = ({ children }) => {
     const fetchServices = async () => {
       try {
         const res = await serviceService.getActive(); 
-        setServices(res.data); 
+        
+          
+        setServices(Array.isArray(res) ? res : []);
       } catch (error) {
         console.error("Error fetching services:", error);
       } finally {

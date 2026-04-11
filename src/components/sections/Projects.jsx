@@ -15,7 +15,6 @@ const formatDate = (dateStr) => {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 };
 
-/* ── Skeleton ── */
 const ProjectsSkeleton = () => (
   <div className="space-y-5">
     <div className="w-full h-[460px] bg-neutral-100 dark:bg-neutral-800 rounded-3xl animate-pulse" />
@@ -34,7 +33,6 @@ const ProjectsSkeleton = () => (
   </div>
 );
 
-/* ── Hero Card (first project) ── */
 const HeroCard = ({ project }) => {
   const img = project.imgUrls?.[0];
   return (
@@ -52,22 +50,38 @@ const HeroCard = ({ project }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
 
       <div className="absolute top-6 left-7">
-        <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-[0.18em] uppercase text-white"
-          style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}>
+        <span
+          className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-[0.18em] uppercase text-white"
+          style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}
+        >
           Featured
         </span>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
-        <h3 className="text-white font-black tracking-tight leading-tight mb-3"
-          style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontFamily: "'Playfair Display', Georgia, serif" }}>
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span className={`text-[11px] font-semibold px-3 py-1 rounded-full ${
+            project.isActive
+              ? 'bg-emerald-500/25 text-emerald-300'
+              : 'bg-red-500/25 text-red-300'
+          }`}>
+            {project.isActive ? 'Active' : 'Completed'}
+          </span>
+          {project.location && (
+            <span className="text-white/50 text-xs">📍 {project.location}</span>
+          )}
+        </div>
+        <h3
+          className="text-white font-black tracking-tight leading-tight mb-3"
+          style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
           {project.name}
         </h3>
         <p className="text-neutral-300 text-sm md:text-base leading-relaxed max-w-2xl line-clamp-2 mb-4">
           {project.description}
         </p>
         {(project.startedFrom || project.endedFrom) && (
-          <p className="text-neutral-400 text-xs tracking-widest uppercase">
+          <p className="text-white/40 text-xs tracking-widest uppercase">
             {formatDate(project.startedFrom)}
             {project.startedFrom && project.endedFrom && ' — '}
             {formatDate(project.endedFrom)}
@@ -78,12 +92,11 @@ const HeroCard = ({ project }) => {
   );
 };
 
-/* ── Small Card ── */
 const SmallCard = ({ project }) => {
   const img = project.imgUrls?.[0];
   return (
-    <div className="group bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-black/50 transition-all duration-300">
-      <div className="relative h-52 bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+    <div className="group bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-black/50 transition-all duration-300 flex flex-col">
+      <div className="relative h-52 bg-neutral-100 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
         {img ? (
           <img
             src={optimizeImage(img, 600)}
@@ -93,23 +106,44 @@ const SmallCard = ({ project }) => {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-black text-5xl text-neutral-300 dark:text-neutral-700"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <span
+              className="font-black text-5xl text-neutral-300 dark:text-neutral-700"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
               {project.name?.slice(0, 2).toUpperCase()}
             </span>
           </div>
         )}
       </div>
-      <div className="p-5">
-        <h3 className="font-bold text-neutral-900 dark:text-white mb-1.5 line-clamp-1"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+
+      <div className="p-5 flex flex-col flex-1">
+        <div className="flex items-center gap-2 flex-wrap mb-3">
+          <span className={`text-[11px] font-semibold px-3 py-1 rounded-full ${
+            project.isActive
+              ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+              : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+          }`}>
+            {project.isActive ? 'Active' : 'Completed'}
+          </span>
+          {project.location && (
+            <span className="text-xs text-neutral-400 dark:text-neutral-500">
+              📍 {project.location}
+            </span>
+          )}
+        </div>
+
+        <h3
+          className="font-bold text-neutral-900 dark:text-white mb-2 line-clamp-1 text-[17px] leading-snug"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
           {project.name}
         </h3>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2 mb-3">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-2 flex-1">
           {project.description}
         </p>
+
         {(project.startedFrom || project.endedFrom) && (
-          <p className="text-[11px] text-neutral-400 dark:text-neutral-600 uppercase tracking-widest">
+          <p className="text-[11px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
             {formatDate(project.startedFrom)}
             {project.startedFrom && project.endedFrom && ' — '}
             {formatDate(project.endedFrom)}
@@ -120,7 +154,6 @@ const SmallCard = ({ project }) => {
   );
 };
 
-/* ── Main Component ── */
 const Projects = () => {
   const { data, loading, error, execute } = useApi(projectService.getActive);
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -148,55 +181,50 @@ const Projects = () => {
       <section id="projects" className="py-24 px-6 bg-white dark:bg-neutral-950 transition-colors duration-200">
         <div className="max-w-6xl mx-auto">
 
-          {/* Header */}
           <div className="mb-14">
             <p className="text-xs font-semibold tracking-[0.22em] uppercase text-neutral-400 dark:text-neutral-500 mb-2">
               Our Work
             </p>
-            <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-white leading-none"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <h2
+              className="text-5xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-white leading-none"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
               Projects
             </h2>
           </div>
 
-          {/* Loading */}
           {loading && <ProjectsSkeleton />}
 
-          {/* Error */}
           {error && (
             <div className="text-center py-20">
               <p className="text-sm text-neutral-400 mb-3">Could not load projects.</p>
-              <button onClick={() => execute()}
-                className="text-sm text-neutral-900 dark:text-white underline underline-offset-4 bg-transparent border-0 cursor-pointer">
+              <button
+                onClick={() => execute()}
+                className="text-sm text-neutral-900 dark:text-white underline underline-offset-4 bg-transparent border-0 cursor-pointer"
+              >
                 Try again
               </button>
             </div>
           )}
 
-          {/* Empty */}
           {!loading && !error && data?.length === 0 && (
             <div className="text-center py-20 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
               <p className="text-neutral-400 dark:text-neutral-600 text-sm">Projects coming soon.</p>
             </div>
           )}
 
-          {/* Projects */}
           {!loading && !error && data?.length > 0 && (
             <div className="space-y-5">
-
-              {/* Hero — first project */}
               {hero && <HeroCard project={hero} />}
 
-              {/* 3-col grid — remaining projects */}
               {rest.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
                   {rest.map(project => (
                     <SmallCard key={project.id} project={project} />
                   ))}
                 </div>
               )}
 
-              {/* See More button */}
               {hasMore && (
                 <div className="flex justify-center pt-10">
                   <button
@@ -224,13 +252,11 @@ const Projects = () => {
                 </div>
               )}
 
-              {/* All loaded message */}
               {!hasMore && data.length > INITIAL_COUNT && (
-                <p className="text-center text-xs text-neutral-400 dark:text-neutral-600 pt-8 tracking-widest uppercase">
+                <p className="text-center text-xs text-neutral-400 dark:text-neutral-500 pt-8 tracking-widest uppercase">
                   All {data.length} projects loaded
                 </p>
               )}
-
             </div>
           )}
 
