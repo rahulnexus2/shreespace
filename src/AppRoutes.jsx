@@ -6,21 +6,21 @@ import Layout from './components/ui/Layout'
 
 
 import { Route,Routes } from 'react-router-dom'
-import Layout from './components/ui/Layout'
 
+import Services from './components/sections/Services'
 
-const Routes = () => {
+const AppRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Layout/>} >
-      <Route path='/about' element={<About/>}/>
-      <Route path='/projects' element={<Projects/>}/>
-      <Route path='/testimonials' element={<Testimonials/>}/>
-      <Route path='/services' element={<Services/>}/>
+      <Route path='about' element={<About/>}/>
+      <Route path='projects' element={<Projects/>}/>
+      <Route path='testimonials' element={<Testimonials/>}/>
+      <Route path='services' element={<Services/>}/>
       </Route>
     </Routes>
     
   )
 }
 
-export default Routes
+export default AppRoutes

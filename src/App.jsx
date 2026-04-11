@@ -6,7 +6,7 @@ import Navbar from './components/sections/Navbar';
 import Hero from './components/sections/Hero';
 import ContactModal from './components/sections/ContactModal';
 
-// lazy load below-the-fold sections
+{/*
 const About        = lazy(() => import('./components/sections/About'));
 const Services     = lazy(() => import('./components/sections/Services'));
 const Projects     = lazy(() => import('./components/sections/Projects'));
@@ -89,6 +89,19 @@ const App = () => {
        </ErrorBoundary>
     </ThemeProvider>
   );
+};  */}
+
+
+
+import AppRoutes from "./AppRoutes";
+
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AppRoutes />
+    </ThemeProvider>
+  );
 };
+
 
 export default App;
