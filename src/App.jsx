@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/sections/Navbar';
 import Hero from './components/sections/Hero';
 import ContactModal from './components/sections/ContactModal';
+import { ModalProvider } from './context/ModalContext';
 
 {/*
 const About        = lazy(() => import('./components/sections/About'));
@@ -95,10 +96,13 @@ const App = () => {
 
 import AppRoutes from "./AppRoutes";
 
+
 const App = () => {
   return (
     <ThemeProvider>
+      <ModalProvider>
       <AppRoutes />
+      </ModalProvider>
     </ThemeProvider>
   );
 };

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import useApi from '../../hooks/useApi';
-import messageService from '../../api/services/messageService';
 import userService from '../../api/services/userService';
+import { useModal } from '../../context/ModalContext';
 
 const StarDisplay = ({ rate }) => {
-  if (!rate || rate <= 0) return null;
+  if (rate === null || rate === undefined) return null;
   const capped = Math.min(rate, 5);
   return (
     <div className="flex gap-0.5 mb-3">
@@ -40,8 +40,8 @@ const TestimonialCard = ({ item }) => (
 );
 
 const Testimonials = ({ onTestimonialClick }) => {
-  const { data: messages, loading: msgLoading, error: msgError, execute: fetchMessages } = useApi(messageService.getActive);
-  const { data: users, loading: userLoading, error: userError, execute: fetchUsers } = useApi(userService.getActive);
+  const { openModal } = useModal();
+  const { data: users, loading, error, execute: fetchUsers } = useApi(userService.getActive);
 
   const [showAll, setShowAll] = useState(false);
   const trackRef = useRef(null);
@@ -49,36 +49,23 @@ const Testimonials = ({ onTestimonialClick }) => {
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   useEffect(() => {
-    fetchMessages();
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    if (messages) console.log("first message:", messages[0]);
-  }, [messages]);
-  useEffect(() => {
-  console.log("USERS:", users);
-}, [users]);
-
-  const loading = msgLoading || userLoading;
-  const error = msgError || userError;
-
-  const testimonials = messages && users
-    ? messages
-        .filter(msg =>
-          msg.messageType?.toLowerCase() === 'testimonial' &&
-          msg.isActive !== false &&
-          msg.isApproved !== false
-        )
-        .map(msg => {
-          const user = users.find(u => u.id === msg.userId);
-          return {
+  const testimonials = users
+    ? users.flatMap(user =>
+        (user.messageDtos ?? [])
+          .filter(msg =>
+            msg.isActive !== false &&
+            msg.isApproved !== false
+          )
+          .map(msg => ({
             ...msg,
-            firstName: user?.firstName ?? '',
-            lastName: user?.lastName ?? '',
-            email: user?.email ?? '',
-          };
-        })
+            firstName: user.firstName ?? '',
+            lastName: user.lastName ?? '',
+            email: user.email ?? '',
+          }))
+      )
     : [];
 
   const INITIAL_COUNT = 10;
@@ -119,7 +106,7 @@ const Testimonials = ({ onTestimonialClick }) => {
             What our clients say about us
           </p>
           <button
-            onClick={onTestimonialClick}
+             onClick={() => openModal('Testimonial')}  
             className="px-6 py-2.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:opacity-80 transition-opacity cursor-pointer border-0"
           >
             ✦ Submit a Testimonial

@@ -7,7 +7,7 @@ import App from './App.jsx'
 import ServicesProvider from './context/ServicesContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <BrowserRouter>
     
     <HelmetProvider>
@@ -16,5 +16,5 @@ createRoot(document.getElementById('root')).render(
       </ServicesProvider>
     </HelmetProvider>
     </BrowserRouter>
-  </StrictMode>,
+ 
 )

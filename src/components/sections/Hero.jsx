@@ -1,4 +1,9 @@
+import { Link } from 'react-router-dom';
+import { useModal } from '../../context/ModalContext';
+
+
 const Hero = ({ onContactClick }) => {
+  const { openModal } = useModal();
   return (
     <section
       id="home"
@@ -19,18 +24,18 @@ const Hero = ({ onContactClick }) => {
         {/* CTA */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
           <button
-            onClick={onContactClick}
+            onClick={()=>openModal('Query')}
             className="px-8 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-base font-semibold hover:opacity-80 transition"
           >
             Book a Consultation
           </button>
 
-          <button
-            onClick={() => (window.location.href = "#services")}
-            className="px-8 py-3 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+          <Link
+            to="/services"
+            className="px-8 py-3 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-800 transition no-underline"
           >
             Explore Services
-          </button>
+          </Link>
         </div>
 
         
